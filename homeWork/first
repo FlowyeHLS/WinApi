@@ -2,7 +2,7 @@
 #include "resource.h"
 #include <Windows.h>
 
-#define MY_LOGIN_TEXT "Введите имя пользователя"
+#define MY_LOGIN "Введите имя пользователя"
 
 BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -18,7 +18,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
     case WM_INITDIALOG: {
         HWND hEditLogin = GetDlgItem(hwnd, IDC_EDIT_LOGIN);
-        SendMessage(hEditLogin, WM_SETTEXT, 0, (LPARAM)MY_LOGIN_TEXT);
+        SendMessage(hEditLogin, WM_SETTEXT, 0, (LPARAM)MY_LOGIN);
         SendMessage(hEditLogin, EM_SETSEL, 0, -1);  
         break;
     }
@@ -66,7 +66,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 
         if (sz_buffer[0] == '\0') {
-            SendMessage(hEditLogin, WM_SETTEXT, 0, (LPARAM)MY_LOGIN_TEXT);
+            SendMessage(hEditLogin, WM_SETTEXT, 0, (LPARAM)MY_LOGIN);
         }
         break;
     }
