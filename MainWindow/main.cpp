@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include "resource.h"
 
+#define IDC_STATIC 1000
+#define IDC_EDIT 1001
+#define IDC_BUTTON 1002
+
+
 CONST CHAR g_sz_CLASS_NAME[] = "My First Window";	//Абсолютно у любого класса окна есть имя.
 //Имя класса окна - это самая обычная строка.
 
@@ -85,7 +90,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE pRevInst, LPSTR lpCmdLine, INT
 		DispatchMessage(&msg);
 	}
 
-	return msg.message;
+	return msg.wParam;
 }
 
 INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -93,6 +98,43 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 	case WM_CREATE:
+		//A - ANSI ASCII
+		//W - Wide encoding (Unicide - w_char t)
+		CreateWindowEx
+		(
+			NULL,
+			"Static",
+			"Этот StaticText создан при помощи функции CreateWindowEx().",
+			WS_CHILD | WS_VISIBLE,
+			10, 10,
+			550, 25,
+			hwnd,
+			(HMENU)IDC_STATIC,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Edit", "",
+			WS_CHILD | WS_VISIBLE | WS_BORDER | ES_CENTER,
+			10, 50,
+			550, 22,
+			hwnd,
+			(HMENU)IDC_EDIT,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "Применить",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			450, 80,
+			110, 25,
+			hwnd,
+			(HMENU)IDC_BUTTON,
+			GetModuleHandle(NULL),
+			NULL
+		);
 		break;
 	case WM_MOVE:
 	case WM_SIZE:
@@ -119,6 +161,20 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 		break;
 	case WM_COMMAND:
+		switch (LOWORD(wParam))
+		{
+		case IDC_BUTTON:
+		{
+			HWND hEdit = GetDlgItem(hwnd, 1001);
+			HWND hStatic = GetDlgItem(hwnd, 1000);
+			CONST INT SIZE = 1024;
+			CHAR sz_buffer[SIZE] = {};
+			SendMessage(hEdit, WM_GETTEXT, SIZE, (LPARAM)sz_buffer);
+			SendMessage(hStatic, WM_SETTEXT, 0, (LPARAM)sz_buffer);
+			SendMessage(hwnd, WM_SETTEXT, 0, (LPARAM)sz_buffer);
+		}
+			break;
+		}
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);

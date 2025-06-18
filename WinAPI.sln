@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ComboBox", "ComboBox\ComboB
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MainWindow", "MainWindow\MainWindow.vcxproj", "{13F441B3-0A74-412A-AEA5-60AA81DB9639}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calc", "Calc\Calc.vcxproj", "{3D007A15-BBBC-45EA-A8D3-A66787A0ADCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{13F441B3-0A74-412A-AEA5-60AA81DB9639}.Release|x64.Build.0 = Release|x64
 		{13F441B3-0A74-412A-AEA5-60AA81DB9639}.Release|x86.ActiveCfg = Release|Win32
 		{13F441B3-0A74-412A-AEA5-60AA81DB9639}.Release|x86.Build.0 = Release|Win32
+		{3D007A15-BBBC-45EA-A8D3-A66787A0ADCD}.Debug|x64.ActiveCfg = Debug|x64
+		{3D007A15-BBBC-45EA-A8D3-A66787A0ADCD}.Debug|x64.Build.0 = Debug|x64
+		{3D007A15-BBBC-45EA-A8D3-A66787A0ADCD}.Debug|x86.ActiveCfg = Debug|Win32
+		{3D007A15-BBBC-45EA-A8D3-A66787A0ADCD}.Debug|x86.Build.0 = Debug|Win32
+		{3D007A15-BBBC-45EA-A8D3-A66787A0ADCD}.Release|x64.ActiveCfg = Release|x64
+		{3D007A15-BBBC-45EA-A8D3-A66787A0ADCD}.Release|x64.Build.0 = Release|x64
+		{3D007A15-BBBC-45EA-A8D3-A66787A0ADCD}.Release|x86.ActiveCfg = Release|Win32
+		{3D007A15-BBBC-45EA-A8D3-A66787A0ADCD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
