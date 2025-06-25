@@ -1,8 +1,9 @@
 #include <Windows.h>
 #include "resource.h"
 #include <float.h>
+#include <iostream>
 #include <stdio.h>
-
+#define delimeter "\n-----------------------------------------------------------\n"
 CONST CHAR g_sz_CLASS_NAME[] = "MyCalc";
 
 CONST CHAR* g_sz_OPERATIONS[] = { "+","-","*","/" };
@@ -29,6 +30,8 @@ CONST INT g_SIZE = 256;
 
 
 INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[]);
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR LpCmdLine, INT nCmdShow)
 {
@@ -101,6 +104,12 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 	{
+		AllocConsole();
+		freopen("CONOUT$", "w", stdout);
+		//std::setlocale(LC_ALL, "");
+		//system("CHCP 1251");
+		SetConsoleOutputCP(1251);
+
 		HWND hEditDisplay = CreateWindowEx
 		(
 			NULL, "Edit", "0",
@@ -123,7 +132,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				CreateWindowEx
 				(
 					NULL, "Button", szDigit,
-					WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+					WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_BITMAP,
 					g_i_BUTTON_START_X + (g_i_BUTTON_SIZE + g_i_INTERVAL) * j,
 					g_i_BUTTON_START_Y + (g_i_BUTTON_SIZE + g_i_INTERVAL) * i / 3,
 					g_i_BUTTON_SIZE, g_i_BUTTON_SIZE,
@@ -139,7 +148,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		CreateWindowEx
 		(
 			NULL, "Button", "0",
-			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_BITMAP,
 			g_i_BUTTON_START_X, g_i_BUTTON_START_Y + (g_i_BUTTON_SPACE) * 3,
 			g_i_BUTTON_SIZE_DOUBLE, g_i_BUTTON_SIZE,
 			hwnd,
@@ -189,9 +198,16 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				(HMENU)(IDC_BUTTON_BSP + i),
 				GetModuleHandle(NULL),
 				NULL
-
 			);
 		}
+		HICON hIcon = (HICON)LoadImage(GetModuleHandle(NULL), "BMP\\0.bmp", IMAGE_BITMAP, LR_DEFAULTSIZE, LR_DEFAULTSIZE, LR_LOADFROMFILE);
+		//GetLastError();
+		//CHAR sz_error[32] = "";
+		//sprintf(sz_error, "%i", GetLastError());
+		//MessageBox(hwnd, sz_error, "", MB_OK);
+		//SendMessage(hwnd, WM_SETICON, 0, (LPARAM)hIcon);
+		//SendMessage(GetDlgItem(hwnd, IDC_BUTTON_0), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hIcon);
+		SetSkin(hwnd, "square_blue");
 	}
 	break;
 	case WM_COMMAND:
@@ -331,40 +347,40 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		default:
 			break;
 		case VK_OEM_PERIOD:
-		case VK_DECIMAL:	
+		case VK_DECIMAL:
 			SendMessage(GetDlgItem(hwnd, IDC_BUTTON_POINT), BM_SETSTATE, FALSE, 0);
 			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_POINT, 0);
 			break;
 		case VK_ADD:
-		case VK_OEM_PLUS:   
+		case VK_OEM_PLUS:
 			SendMessage(GetDlgItem(hwnd, IDC_BUTTON_PLUS), BM_SETSTATE, FALSE, 0);
 			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_PLUS, 0);
 			break;
 		case VK_SUBTRACT:
 
-		case VK_OEM_MINUS: 
+		case VK_OEM_MINUS:
 			SendMessage(GetDlgItem(hwnd, IDC_BUTTON_MINUS), BM_SETSTATE, FALSE, 0);
 			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_MINUS, 0);
 			break;
-		case VK_MULTIPLY:  
+		case VK_MULTIPLY:
 			SendMessage(GetDlgItem(hwnd, IDC_BUTTON_ASTER), BM_SETSTATE, FALSE, 0);
 			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_ASTER, 0);
 			break;
 		case VK_DIVIDE:
 
-		case VK_OEM_2:		
+		case VK_OEM_2:
 			SendMessage(GetDlgItem(hwnd, IDC_BUTTON_SLASH), BM_SETSTATE, FALSE, 0);
 			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_SLASH, 0);
 			break;
-		case VK_BACK:		
+		case VK_BACK:
 			SendMessage(GetDlgItem(hwnd, IDC_BUTTON_BSP), BM_SETSTATE, FALSE, 0);
 			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_BSP, 0);
 			break;
-		case VK_ESCAPE:	
+		case VK_ESCAPE:
 			SendMessage(GetDlgItem(hwnd, IDC_BUTTON_CLR), BM_SETSTATE, FALSE, 0);
 			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_CLR, 0);
 			break;
-		case VK_RETURN:	
+		case VK_RETURN:
 			SendMessage(GetDlgItem(hwnd, IDC_BUTTON_EQUAL), BM_SETSTATE, FALSE, 0);
 			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_EQUAL, 0);
 			break;
@@ -373,6 +389,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	break;
 
 	case WM_DESTROY:
+		FreeConsole();
 		PostQuitMessage(0);
 		break;
 	case WM_CLOSE:
@@ -381,4 +398,53 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	default:return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 	return FALSE;
+}
+
+LPSTR FormatLastError(DWORD dwErrorID)
+{
+	//DWORD dwErrorID = GetLastError();
+	LPSTR lpszMessage = NULL;
+	FormatMessage
+	(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,
+		dwErrorID,
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_RUSSIAN_RUSSIA),
+		(LPSTR)&lpszMessage,
+		NULL,
+		NULL
+	);
+	return lpszMessage;
+}
+
+VOID PrintLastError(DWORD dwErrorID)
+{
+	LPSTR lpszMessage = FormatLastError(GetLastError());
+	std::cout << lpszMessage << std::endl;
+	LocalFree(lpszMessage);
+}
+
+VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[])
+{
+	std::cout << "SetSkin()" << std::endl;
+	CHAR sz_filename[FILENAME_MAX] = {};
+	for (int i = 0; i <= 9; ++i)
+	{
+		sprintf(sz_filename, "BMP\\%s\\button_%i.bmp", sz_skin, i);
+		HBITMAP bmpIcon = (HBITMAP)LoadImage
+		(
+			GetModuleHandle(NULL),
+			sz_filename,
+			IMAGE_BITMAP,
+			i == 0 ? g_i_BUTTON_SIZE_DOUBLE : g_i_BUTTON_SIZE,
+			g_i_BUTTON_SIZE,
+			LR_LOADFROMFILE
+		);
+
+		//MessageBox(hwnd, lpszMessage, "", MB_OK);
+
+		PrintLastError(GetLastError());
+		SendMessage(GetDlgItem(hwnd, IDC_BUTTON_0 + i), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bmpIcon);
+	}
+	std::cout << delimeter << std::endl;
 }
